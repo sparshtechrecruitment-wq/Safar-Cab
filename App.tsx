@@ -16,7 +16,6 @@ import { CategoryView } from './pages/CategoryView';
 import { StepIndicator } from './components/StepIndicator';
 import { BottomNav } from './components/BottomNav';
 import { SidebarNav } from './components/SidebarNav';
-import { SplashAnimation } from './components/SplashAnimation';
 import { JourneyData, TravelIntent, AppView, MainTab, Booking, CarOption } from './types';
 import { CAR_FLEET } from './constants';
 import { ArrowLeft } from 'lucide-react';
@@ -49,7 +48,6 @@ const INITIAL_BOOKINGS: Booking[] = [
 ];
 
 const App: React.FC = () => {
-  const [showSplash, setShowSplash] = useState(true);
   const [view, setView] = useState<AppView>('login');
   const [activeTab, setActiveTab] = useState<MainTab>('home');
   const [selectedDestinationId, setSelectedDestinationId] = useState<string | null>(null);
@@ -233,7 +231,7 @@ const App: React.FC = () => {
 
     if (view === 'booking') {
       return (
-          <div className="min-h-screen flex flex-col bg-safar-50 font-sans text-safar-900 pb-20">
+          <div className="min-h-screen flex flex-col bg-safar-50 font-sans text-safar-900 pb-6">
             <header className="px-6 py-4 flex items-center gap-4 border-b border-safar-100 bg-white/50 backdrop-blur-md sticky top-0 z-30">
                 <button onClick={handleBookingBack} className="p-2 -ml-2 hover:bg-safar-100 rounded-full transition-colors">
                     <ArrowLeft size={24} className="text-safar-800" />
@@ -321,7 +319,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-safar-50">
-      {showSplash && <SplashAnimation onComplete={() => setShowSplash(false)} />}
       {renderView()}
     </div>
   );

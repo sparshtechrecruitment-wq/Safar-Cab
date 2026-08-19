@@ -89,7 +89,7 @@ export const HomeDashboard: React.FC<HomeDashboardProps> = ({ onPlanTrip, favori
   };
 
   return (
-    <div className="fade-in pb-24 bg-safar-50 min-h-screen">
+    <div className="fade-in pb-6 bg-safar-50">
       {/* Dynamic Header */}
       <div className="bg-gradient-to-br from-safar-800 via-safar-600 to-safar-800 text-white p-6 pt-12 rounded-b-[3rem] shadow-soft relative overflow-hidden">
         {/* Abstract Shapes */}

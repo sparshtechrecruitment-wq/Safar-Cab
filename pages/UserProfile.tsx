@@ -121,7 +121,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
   // --- RENDER FUNCTIONS ---
 
   const renderDetails = () => (
-    <div className="fade-in min-h-screen bg-safar-50">
+    <div className="fade-in pb-6 bg-safar-50">
       <Header 
         title="Profile Details" 
         onBack={() => { setCurrentView('menu'); setIsEditing(false); }} 
@@ -233,7 +233,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
     });
 
     return (
-      <div className="fade-in min-h-screen bg-safar-50">
+      <div className="fade-in pb-6 bg-safar-50">
         <Header title="My Journeys" onBack={() => setCurrentView('menu')} />
         <div className="sticky top-[60px] z-10 bg-safar-50 px-6 pt-4 pb-2">
              <div className="flex bg-white p-1 rounded-xl border border-safar-100 shadow-sm">
@@ -290,7 +290,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
   const renderJourneyDetails = () => {
     if (!selectedBooking) return null;
     return (
-        <div className="fade-in min-h-screen bg-safar-50">
+        <div className="fade-in pb-6 bg-safar-50">
             <Header title="Trip Details" onBack={() => setCurrentView('journeys')} />
             <div className="p-6 space-y-6">
                 
@@ -357,7 +357,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
   };
 
   const renderPayments = () => (
-    <div className="fade-in min-h-screen bg-safar-50">
+    <div className="fade-in pb-6 bg-safar-50">
         <Header title="Payments & Refunds" onBack={() => setCurrentView('menu')} />
         <div className="p-6 space-y-6">
             
@@ -429,7 +429,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
   );
 
   const renderSafety = () => (
-    <div className="fade-in min-h-screen bg-safar-50">
+    <div className="fade-in pb-6 bg-safar-50">
       <Header title="Safety Center" onBack={() => setCurrentView('menu')} />
       <div className="p-6 space-y-6">
          
@@ -470,7 +470,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
   );
 
   const renderPreferences = () => (
-    <div className="fade-in min-h-screen bg-safar-50">
+    <div className="fade-in pb-6 bg-safar-50">
       <Header title="Preferences" onBack={() => setCurrentView('menu')} />
       <div className="p-6 space-y-6">
         
@@ -578,7 +578,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
     ];
 
     return (
-      <div className="fade-in min-h-screen bg-safar-50">
+      <div className="fade-in pb-6 bg-safar-50">
         <Header title="Help & Support" onBack={() => setCurrentView('menu')} />
         <div className="p-6 space-y-6">
           
@@ -629,7 +629,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
   };
 
   const renderHelpTopic = () => (
-      <div className="fade-in min-h-screen bg-safar-50">
+      <div className="fade-in pb-6 bg-safar-50">
           <Header title={selectedTopic || 'Help Topic'} onBack={() => setCurrentView('help')} />
           <div className="p-6">
               <div className="bg-white p-6 rounded-3xl border border-safar-100 text-center mb-6">
@@ -659,7 +659,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
   );
 
   const renderTickets = () => (
-    <div className="fade-in min-h-screen bg-safar-50">
+    <div className="fade-in pb-6 bg-safar-50">
         <Header title="Support Tickets" onBack={() => setCurrentView('help')} />
         <div className="p-6">
             {tickets.length > 0 ? (
@@ -680,7 +680,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
   );
 
   const renderAbout = () => (
-    <div className="fade-in min-h-screen bg-safar-50">
+    <div className="fade-in pb-6 bg-safar-50">
       <Header title="About Safar" onBack={() => setCurrentView('menu')} />
       <div className="p-6 space-y-6">
          <div className="text-center py-8">
@@ -724,7 +724,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ onLogout, bookings }) 
 
   // --- DEFAULT MENU VIEW ---
   return (
-    <div className="fade-in pb-24 min-h-screen bg-safar-50">
+    <div className="fade-in pb-6 bg-safar-50">
       
       {/* Profile Header */}
       <div className="bg-white pt-12 pb-6 px-6 rounded-b-[2.5rem] shadow-sm border-b border-safar-100 mb-6">

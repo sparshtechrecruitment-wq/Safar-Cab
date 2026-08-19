@@ -26,7 +26,7 @@ export const CategoryView: React.FC<CategoryViewProps> = ({ category, onBack, on
     }, [category]);
 
     return (
-        <div className="min-h-screen bg-safar-50 pb-24 animate-slide-up flex flex-col">
+        <div className="bg-safar-50 pb-6 animate-slide-up flex flex-col">
             {/* Header */}
             <header className="px-6 py-4 flex items-center gap-4 bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-safar-100">
                 <button onClick={onBack} className="p-2 -ml-2 hover:bg-safar-100 rounded-full transition-colors">

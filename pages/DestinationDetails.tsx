@@ -35,7 +35,7 @@ export const DestinationDetails: React.FC<DestinationDetailsProps> = ({ destinat
     const attractions = location.nearbyAttractions || ['Local Markets', 'Viewpoints'];
 
     return (
-        <div className="min-h-screen bg-safar-50 pb-24 animate-slide-up relative">
+        <div className="bg-safar-50 pb-6 animate-slide-up relative">
             {/* Hero Image Section */}
             <div className="relative h-80 w-full">
                 <img src={images[0]} alt={location.name} className="w-full h-full object-cover" />

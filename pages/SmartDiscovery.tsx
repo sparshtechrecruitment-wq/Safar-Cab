@@ -43,7 +43,7 @@ export const SmartDiscovery: React.FC = () => {
   }
 
   return (
-    <div className="pb-24 animate-slide-down">
+    <div className="pb-6 animate-slide-down">
       {/* Dynamic Header based on Context */}
       <div className="bg-gradient-to-br from-safar-800 to-safar-600 text-white p-6 pt-12 rounded-b-[3rem] shadow-soft">
         <div className="flex justify-between items-start mb-6">

@@ -23,7 +23,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen bg-safar-50 flex flex-col p-6">
+    <div className="h-screen bg-safar-50 flex flex-col p-6">
       {/* Header */}
       <div className="flex justify-between items-center py-4">
          <div className="scale-75 origin-left">

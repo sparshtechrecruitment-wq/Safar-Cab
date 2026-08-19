@@ -70,7 +70,7 @@ export const TravelExplore: React.FC<TravelExploreProps> = ({ onPlanTrip }) => {
   );
 
   return (
-    <div className="fade-in pt-24 pb-24 min-h-screen bg-safar-50">
+    <div className="fade-in pt-6 pb-6 bg-safar-50">
         
         {/* Header */}
         <div className="px-6 mb-8">

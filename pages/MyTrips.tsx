@@ -59,7 +59,7 @@ export const MyTrips: React.FC<MyTripsProps> = ({ bookings, onRateTrip, onPlanNe
   }
 
   return (
-    <div className="pt-20 px-6 pb-24 fade-in">
+    <div className="pt-6 px-6 pb-6 fade-in">
       <h1 className="font-serif text-3xl text-safar-900 mb-6">My Trips</h1>
       
       {/* Feedback Prompt Banner */}
