@@ -7,7 +7,7 @@ export type AppView = 'login' | 'main' | 'booking' | 'destination' | 'category';
 export type MainTab = 'home' | 'travel' | 'trips' | 'notifications' | 'profile';
 
 export type Season = 'Summer' | 'Monsoon' | 'Winter' | 'All Year';
-export type TripType = 'Spiritual' | 'Leisure' | 'Nature' | 'Utility' | 'Heritage' | 'Hill Station' | 'Beach';
+export type DestinationCategory = 'Spiritual' | 'Leisure' | 'Nature' | 'Utility' | 'Heritage' | 'Hill Station' | 'Beach';
 
 export interface Location {
   id: string;
@@ -17,7 +17,7 @@ export interface Location {
   images?: string[];
   tags: string[];
   season: Season;
-  type: TripType;
+  type: DestinationCategory;
   bestMonths: string[];
   familyFriendly: boolean;
   idealDuration?: string;
