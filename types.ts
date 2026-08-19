@@ -1,4 +1,6 @@
 
+// Re-export pricing types from pricingEngine for use across components
+export type { TripType, FareBreakdown, VehicleCategory } from './services/pricingEngine';
 export type TravelIntent = 'family' | 'parents' | 'religious' | 'leisure' | 'business' | 'airport';
 
 export type AppView = 'login' | 'main' | 'booking' | 'destination' | 'category';
@@ -114,6 +116,7 @@ export interface JourneyData {
   origin: string;
   destination: string;
   date: string;
+  tripType: 'one-way' | 'round-trip';
   selectedCarId: string | null;
   passengers: number;
   notes: string;

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '../components/Button';
+import { EnquiryModal } from '../components/EnquiryModal';
 import { JourneyData, AIJourneyInsight } from '../types';
 import { CAR_FLEET } from '../constants';
 import { getJourneyInsights } from '../services/geminiService';
-import { Map, Coffee, Info, Car, Loader, RefreshCw, ChevronRight, Sparkles } from 'lucide-react';
+import { calculateFare, formatPrice, VehicleCategory } from '../services/pricingEngine';
+import { Map, Coffee, Info, Car, Loader, RefreshCw, Sparkles, Tag, ArrowRight, ArrowLeftRight } from 'lucide-react';
 
 interface SummaryProps {
   data: JourneyData;
@@ -25,8 +27,10 @@ export const Summary: React.FC<SummaryProps> = ({ data, onProceed, onBack }) => 
   const [insight, setInsight] = useState<AIJourneyInsight | null>(null);
   const [loading, setLoading] = useState(true);
   const [triviaIndex, setTriviaIndex] = useState(0);
+  const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
 
   const car = CAR_FLEET.find(c => c.id === data.selectedCarId);
+  const fareBreakdown = car ? calculateFare(data.origin, data.destination, car.category as VehicleCategory, data.tripType || 'one-way') : null;
 
   const fetchInsights = async () => {
     setLoading(true);
@@ -60,6 +64,21 @@ export const Summary: React.FC<SummaryProps> = ({ data, onProceed, onBack }) => 
         <h2 className="font-serif text-3xl text-safar-900">Review Journey</h2>
         
         <div className="bg-white p-6 rounded-3xl border border-safar-100 shadow-sm space-y-6">
+          {/* Trip Type Badge */}
+          <div className="flex items-center gap-2 -mb-2">
+            <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full ${
+              data.tripType === 'round-trip' 
+                ? 'bg-green-100 text-green-700 border border-green-200' 
+                : 'bg-safar-100 text-safar-700 border border-safar-200'
+            }`}>
+              {data.tripType === 'round-trip' ? <ArrowLeftRight size={12}/> : <ArrowRight size={12}/>}
+              {data.tripType === 'round-trip' ? 'Round Trip Journey' : 'One Way Journey'}
+            </span>
+            <span className="inline-flex items-center gap-1 bg-safar-50 text-safar-600 text-xs font-bold px-2 py-1.5 rounded-md border border-safar-100">
+              👥 {data.passengers} Pax
+            </span>
+          </div>
+
           {/* Route */}
           <div className="flex items-start gap-4">
              <div className="flex flex-col items-center gap-1 pt-1">
@@ -91,34 +110,66 @@ export const Summary: React.FC<SummaryProps> = ({ data, onProceed, onBack }) => 
                <p className="font-bold text-safar-900">{car.name}</p>
                <p className="text-sm text-safar-600">Pilot: {car.driver.name}</p>
              </div>
-             <div className="text-right">
-                <span className="block font-bold text-safar-900">₹{car.pricePerKm}/km</span>
-             </div>
           </div>
 
           <hr className="border-safar-100" />
 
            {/* Cost Estimation */}
-           <div className="space-y-2">
-               <div className="flex justify-between text-safar-600 text-sm">
-                   <span>Estimated Fare ({car.category})</span>
-                   <span>₹{car.estimatedTotal}</span>
-               </div>
-               <div className="flex justify-between text-safar-600 text-sm">
-                   <span>Tolls & State Tax</span>
-                   <span>Excluded</span>
-               </div>
-               <div className="flex justify-between font-bold text-lg text-safar-900 pt-2 border-t border-safar-50 mt-2">
-                   <span>Advance to Pay</span>
-                   <span>₹500</span>
-               </div>
-               <p className="text-xs text-safar-400 mt-1">Advance confirms your pilot and schedule. Remaining amount payable at destination.</p>
-           </div>
+           {fareBreakdown ? (
+             <div className="space-y-3">
+                 <p className="text-xs font-bold text-safar-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Tag size={12}/> Price Breakdown
+                 </p>
+                 <div className="flex justify-between text-safar-600 text-sm">
+                     <span>Base Fare ({car.category})</span>
+                     <span className="font-bold">{formatPrice(fareBreakdown.baseFare)}</span>
+                 </div>
+                 <div className="flex justify-between text-safar-600 text-sm">
+                     <span>Driver Bata</span>
+                     <span className="font-medium">{formatPrice(fareBreakdown.driverBata)}</span>
+                 </div>
+                 {fareBreakdown.estimatedToll > 0 && (
+                   <div className="flex justify-between text-safar-600 text-sm">
+                       <span>Toll (Estimated)</span>
+                       <span className="font-medium">{formatPrice(fareBreakdown.estimatedToll)}</span>
+                   </div>
+                 )}
+                 {fareBreakdown.statePermit > 0 && (
+                   <div className="flex justify-between text-safar-600 text-sm">
+                       <span>State Permit</span>
+                       <span className="font-medium">{formatPrice(fareBreakdown.statePermit)}</span>
+                   </div>
+                 )}
+                 {fareBreakdown.roundTripDiscount && fareBreakdown.roundTripDiscount > 0 && (
+                   <div className="flex justify-between text-green-600 text-sm">
+                       <span className="font-medium">Round-Trip Saving</span>
+                       <span className="font-bold">-{formatPrice(fareBreakdown.roundTripDiscount)}</span>
+                   </div>
+                 )}
+                 <div className="flex justify-between font-bold text-xl text-safar-900 pt-3 border-t border-safar-100 mt-2">
+                     <span>Total Estimate</span>
+                     <span>{formatPrice(fareBreakdown.grandTotal)}</span>
+                 </div>
+                 <p className="text-[10px] text-safar-400 mt-1">Total route distance: ~{fareBreakdown.distanceKm} km. Actual tolls may vary slightly.</p>
+             </div>
+           ) : (
+             <div className="space-y-2">
+                <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 flex gap-3">
+                  <Info size={16} className="text-amber-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-bold text-amber-800">Custom Route Enquiry</p>
+                    <p className="text-xs text-amber-700 mt-1">This route isn't in our standard list yet. Send an enquiry and our team will provide a custom fixed quote based on the ₹{car.pricePerKm}/km rate.</p>
+                  </div>
+                </div>
+             </div>
+           )}
         </div>
 
         <div className="flex gap-3">
-          <Button variant="outline" onClick={onBack} className="flex-1">Edit</Button>
-          <Button onClick={onProceed} className="flex-[2]">Proceed to Pay <ChevronRight size={18} /></Button>
+          <Button variant="outline" onClick={onBack} className="flex-1">Back</Button>
+          <Button onClick={() => setIsEnquiryModalOpen(true)} className="flex-[2] shadow-glow">
+            Send Enquiry
+          </Button>
         </div>
       </div>
 
@@ -203,6 +254,16 @@ export const Summary: React.FC<SummaryProps> = ({ data, onProceed, onBack }) => 
             <p className="text-xs text-safar-400">Route optimized for <span className="text-safar-200 font-bold capitalize">{data.intent}</span> travel.</p>
         </div>
       </div>
+
+      <EnquiryModal
+        isOpen={isEnquiryModalOpen}
+        onClose={() => setIsEnquiryModalOpen(false)}
+        fareBreakdown={fareBreakdown}
+        vehicleName={car.name}
+        destination={data.destination}
+        date={data.date}
+        passengers={data.passengers}
+      />
     </div>
   );
 };

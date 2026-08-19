@@ -64,6 +64,7 @@ const App: React.FC = () => {
     origin: 'Vadodara',
     destination: '',
     date: '',
+    tripType: 'one-way',
     selectedCarId: null,
     passengers: 2,
     notes: '',
@@ -165,6 +166,7 @@ const App: React.FC = () => {
         origin: 'Vadodara',
         destination: '',
         date: '',
+        tripType: 'one-way',
         selectedCarId: null,
         passengers: 2,
         notes: '',
@@ -179,7 +181,7 @@ const App: React.FC = () => {
     setBookingStep(2);
   };
 
-  const handleRouteSubmit = (routeData: { origin: string; destination: string; date: string; passengers: number }) => {
+  const handleRouteSubmit = (routeData: { origin: string; destination: string; date: string; passengers: number; tripType: 'one-way' | 'round-trip' }) => {
     setJourneyData({ ...journeyData, ...routeData });
     setBookingStep(3);
   };
@@ -248,7 +250,7 @@ const App: React.FC = () => {
                 {bookingStep === 1 && <IntentSelection onSelect={handleIntentSelect} onBack={handleBookingBack} />}
                 <div className="px-6 max-w-3xl mx-auto w-full pt-6">
                     {bookingStep === 2 && <RoutePlanning onSubmit={handleRouteSubmit} onBack={handleBookingBack} defaultData={journeyData} />}
-                    {bookingStep === 3 && <CarSelection cars={fleet} onSelect={handleCarSelect} onBack={handleBookingBack} selectedCarId={journeyData.selectedCarId} />}
+                    {bookingStep === 3 && <CarSelection cars={fleet} onSelect={handleCarSelect} onBack={handleBookingBack} selectedCarId={journeyData.selectedCarId} journeyData={journeyData} />}
                     {bookingStep === 4 && <Summary data={journeyData} onProceed={handleProceedToPayment} onBack={handleBookingBack} />}
                     {bookingStep === 5 && <Payment amount={500} onSuccess={handlePaymentSuccess} onBack={handleBookingBack} />}
                     {bookingStep === 6 && <MySafar data={journeyData} onHome={exitBooking} />}

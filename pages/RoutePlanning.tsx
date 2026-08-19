@@ -2,12 +2,12 @@
 import React, { useState } from 'react';
 import { Button } from '../components/Button';
 import { POPULAR_LOCATIONS } from '../constants';
-import { MapPin, Calendar as CalendarIcon, Users, Heart, Lock, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { MapPin, Calendar as CalendarIcon, Users, Heart, Lock, ChevronLeft, ChevronRight, ChevronDown, ArrowLeftRight, ArrowRight } from 'lucide-react';
 
 interface RoutePlanningProps {
-  onSubmit: (data: { origin: string; destination: string; date: string; passengers: number }) => void;
+  onSubmit: (data: { origin: string; destination: string; date: string; passengers: number; tripType: 'one-way' | 'round-trip' }) => void;
   onBack: () => void;
-  defaultData: { origin: string; destination: string; date: string; passengers: number };
+  defaultData: { origin: string; destination: string; date: string; passengers: number; tripType?: 'one-way' | 'round-trip' };
 }
 
 export const RoutePlanning: React.FC<RoutePlanningProps> = ({ onSubmit, onBack, defaultData }) => {
@@ -15,6 +15,7 @@ export const RoutePlanning: React.FC<RoutePlanningProps> = ({ onSubmit, onBack, 
   const [destination, setDestination] = useState(defaultData.destination || '');
   const [date, setDate] = useState(defaultData.date || '');
   const [passengers, setPassengers] = useState(defaultData.passengers || 2);
+  const [tripType, setTripType] = useState<'one-way' | 'round-trip'>(defaultData.tripType || 'one-way');
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   // --- Inline Calendar Logic ---
@@ -107,12 +108,47 @@ export const RoutePlanning: React.FC<RoutePlanningProps> = ({ onSubmit, onBack, 
   const canProceed = destination && date && passengers > 0;
 
   return (
-    <div className="fade-in max-w-lg mx-auto pb-20">
+    <div className="fade-in max-w-lg mx-auto pb-6">
       <div className="text-center mb-8">
         <h2 className="font-serif text-4xl text-safar-900 leading-tight">Plan Your<br/><span className="text-safar-600">Perfect Trip</span></h2>
       </div>
 
       <div className="bg-white p-8 rounded-[2.5rem] shadow-soft border border-safar-100 space-y-7 relative overflow-visible">
+        
+        {/* Trip Type Toggle */}
+        <div className="space-y-2">
+          <label className="text-xs font-bold uppercase tracking-wider text-safar-500 pl-1">Trip Type</label>
+          <div className="flex bg-safar-50 p-1.5 rounded-2xl border border-safar-100 gap-1.5">
+            <button
+              onClick={() => setTripType('one-way')}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
+                tripType === 'one-way'
+                  ? 'bg-safar-800 text-white shadow-md'
+                  : 'text-safar-500 hover:text-safar-700'
+              }`}
+            >
+              <ArrowRight size={16} />
+              One Way
+            </button>
+            <button
+              onClick={() => setTripType('round-trip')}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
+                tripType === 'round-trip'
+                  ? 'bg-safar-800 text-white shadow-md'
+                  : 'text-safar-500 hover:text-safar-700'
+              }`}
+            >
+              <ArrowLeftRight size={16} />
+              Round Trip
+            </button>
+          </div>
+          {tripType === 'round-trip' && (
+            <p className="text-xs text-safar-500 pl-1 flex items-center gap-1">
+              <span className="text-green-600 font-bold">✓ Save up to 7.5%</span> vs booking two one-ways
+            </p>
+          )}
+        </div>
+
         {/* Origin (Locked) */}
         <div className="space-y-2">
           <label className="text-xs font-bold uppercase tracking-wider text-safar-500 flex items-center gap-2 pl-1">
@@ -189,7 +225,7 @@ export const RoutePlanning: React.FC<RoutePlanningProps> = ({ onSubmit, onBack, 
         <div className="pt-4">
              <Button 
                 fullWidth 
-                onClick={() => onSubmit({ origin, destination, date, passengers })}
+                onClick={() => onSubmit({ origin, destination, date, passengers, tripType })}
                 disabled={!canProceed}
                 className="shadow-glow py-4 text-lg"
             >
